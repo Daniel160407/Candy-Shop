@@ -1,6 +1,7 @@
 package com.mziuri.servlet;
 
 import com.mziuri.JDBC.MySQLController;
+import com.mziuri.storage.StorageReader;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +14,9 @@ public class ProductsServlet extends HttpServlet {
     private final MySQLController mySQLController = new MySQLController();
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+        StorageReader.getInstance().readAndAddProducts(mySQLController.getEntityManager());
         System.out.println(mySQLController.getProducts());
+
     }
 }

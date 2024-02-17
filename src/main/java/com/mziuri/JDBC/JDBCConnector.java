@@ -18,4 +18,28 @@ public class JDBCConnector {
     protected final CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
 
     protected final Root<Product> productsRoot = criteriaQuery.from(Product.class);
+
+    public EntityManagerFactory getEntityManagerFactory() {
+        return entityManagerFactory;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public EntityTransaction getEntityTransaction() {
+        return entityTransaction;
+    }
+
+    public CriteriaBuilder getCriteriaBuilder() {
+        return criteriaBuilder;
+    }
+
+    public CriteriaQuery<Product> getCriteriaQuery() {
+        return criteriaQuery;
+    }
+
+    public Root<Product> getProductsRoot() {
+        return productsRoot;
+    }
 }
