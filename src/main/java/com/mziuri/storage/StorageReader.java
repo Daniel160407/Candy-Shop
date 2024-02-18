@@ -25,7 +25,7 @@ public class StorageReader {
             ObjectMapper objectMapper = new ObjectMapper();
             File file = new File(STORAGE_FILE_PATH);
 
-            CandyShopData candyShopData = objectMapper.readValue(file, CandyShopData.class);
+            StorageConfig candyShopData = objectMapper.readValue(file, StorageConfig.class);
 
             entityManager.getTransaction().begin();
 

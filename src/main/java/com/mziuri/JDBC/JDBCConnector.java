@@ -8,16 +8,25 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import lombok.Setter;
 
 public class JDBCConnector {
-    protected final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("candyshop");
-    protected final EntityManager entityManager = entityManagerFactory.createEntityManager();
-    protected final EntityTransaction entityTransaction = entityManager.getTransaction();
+    private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("candyshop");
+    private final EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private final EntityTransaction entityTransaction = entityManager.getTransaction();
 
-    protected final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    protected final CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+    private final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    private final CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
 
-    protected final Root<Product> productsRoot = criteriaQuery.from(Product.class);
+    private final Root<Product> productsRoot = criteriaQuery.from(Product.class);
+    private static JDBCConnector instance;
+
+    public static JDBCConnector getInstance() {
+        if (instance == null) {
+            instance = new JDBCConnector();
+        }
+        return instance;
+    }
 
     public EntityManagerFactory getEntityManagerFactory() {
         return entityManagerFactory;

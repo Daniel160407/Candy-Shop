@@ -4,7 +4,7 @@ import com.mziuri.model.Product;
 
 import java.util.List;
 
-public class CandyShopData {
+public class StorageConfig {
     private String password;
     private List<Product> products;
 
