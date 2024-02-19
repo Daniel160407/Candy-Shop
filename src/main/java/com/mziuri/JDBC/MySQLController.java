@@ -1,9 +1,11 @@
 package com.mziuri.JDBC;
 
 import com.mziuri.model.Product;
+import com.mziuri.response.GetProductInfoResponse;
 import com.mziuri.response.GetProductResponse;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,16 @@ public class MySQLController implements JDBCController {
 
     @Override
     public List<GetProductResponse> getProductResponse() {
-        select = jdbcConnector.getCriteriaQuery().select(jdbcConnector.getProductsRoot().get("prod_name").get("prod_amount"));
+        jdbcConnector.initializeCriteria();
+
+        select = jdbcConnector.getCriteriaQuery().multiselect(
+                jdbcConnector.getProductsRoot().get("prod_name"),
+                jdbcConnector.getProductsRoot().get("prod_amount")
+        );
         productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
 
         List<Product> products = productTypedQuery.getResultList();
+
         List<GetProductResponse> getProductResponseList = new ArrayList<>();
 
         products.forEach(product -> getProductResponseList.add(new GetProductResponse(product.getProd_name(), product.getProd_amount())));
@@ -35,9 +43,22 @@ public class MySQLController implements JDBCController {
     }
 
     @Override
-    public Product getProductById(int id) {
-        return null;
+    public GetProductInfoResponse getProductInfoResponse(int id) {
+        jdbcConnector.initializeCriteria();
+
+        select = jdbcConnector.getCriteriaQuery().multiselect(
+                jdbcConnector.getProductsRoot().get("prod_name"),
+                jdbcConnector.getProductsRoot().get("prod_price"),
+                jdbcConnector.getProductsRoot().get("prod_amount")
+        ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_id"), id));
+
+        productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
+
+        Product product = productTypedQuery.getSingleResult();
+
+        return new GetProductInfoResponse(product.getProd_name(), product.getProd_price(), product.getProd_amount());
     }
+
 
     @Override
     public void addNewProduct(Product product) {

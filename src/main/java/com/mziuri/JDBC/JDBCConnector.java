@@ -8,7 +8,6 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import lombok.Setter;
 
 public class JDBCConnector {
     private final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("candyshop");
@@ -16,9 +15,9 @@ public class JDBCConnector {
     private final EntityTransaction entityTransaction = entityManager.getTransaction();
 
     private final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    private final CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+    private CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
 
-    private final Root<Product> productsRoot = criteriaQuery.from(Product.class);
+    private Root<Product> productsRoot = criteriaQuery.from(Product.class);
     private static JDBCConnector instance;
 
     public static JDBCConnector getInstance() {
@@ -26,6 +25,11 @@ public class JDBCConnector {
             instance = new JDBCConnector();
         }
         return instance;
+    }
+
+    public void initializeCriteria() {
+        this.criteriaQuery = criteriaBuilder.createQuery(Product.class);
+        this.productsRoot = criteriaQuery.from(Product.class);
     }
 
     public EntityManagerFactory getEntityManagerFactory() {

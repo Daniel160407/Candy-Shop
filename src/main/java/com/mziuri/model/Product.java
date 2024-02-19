@@ -1,16 +1,13 @@
 package com.mziuri.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "product")
-
 public class Product {
 
     @Id
-    @Column
+    @Column(name = "prod_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int prod_id;
 
@@ -22,6 +19,21 @@ public class Product {
 
     @Column(name = "prod_amount")
     private int prod_amount;
+
+    public Product() {
+
+    }
+
+    public Product(String prod_name, int prod_amount) {
+        this.prod_name = prod_name;
+        this.prod_amount = prod_amount;
+    }
+
+    public Product(String prod_name, float prod_price, int prod_amount) {
+        this.prod_name = prod_name;
+        this.prod_price = prod_price;
+        this.prod_amount = prod_amount;
+    }
 
     public int getProd_id() {
         return prod_id;

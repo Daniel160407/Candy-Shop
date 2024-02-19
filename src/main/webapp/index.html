@@ -5,15 +5,25 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="script.js"></script>
+    <script src="Request.js"></script>
     <title>Candy`s</title>
 </head>
 <body>
 <main>
     <h1>Candy`s</h1>
-    <div class="content-list">
-        <h1>Products</h1>
-        <ul id="productsList">
-        </ul>
+    <div id="main-div">
+        <div class="content-list">
+            <h1>Products</h1>
+            <ul id="productsList">
+            </ul>
+        </div>
+        <div id="product-info" class="product-info">
+            <h1 id="productName"></h1>
+            <p id="price"></p>
+            <p id="remainingAmount"></p>
+            <button onclick="onBuyButtonMouseClicked()">Buy Now</button>
+            <label for="amount">Amount:</label><input id="amount" type="text">
+        </div>
     </div>
 </main>
 <footer>

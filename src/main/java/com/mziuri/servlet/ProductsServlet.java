@@ -17,16 +17,14 @@ import java.io.PrintWriter;
 public class ProductsServlet extends HttpServlet {
     private final MySQLController mySQLController = new MySQLController();
 
-    @Override
-    public void init() {
-        StorageReader.getInstance().readAndAddProducts(JDBCConnector.getInstance().getEntityManager());
-    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/json");
 
+        int prodId = Integer.parseInt(request.getParameter("id"));
+
         PrintWriter printWriter = response.getWriter();
-        printWriter.println(new ObjectMapper().writeValueAsString(mySQLController.getProducts()));
+        printWriter.println(new ObjectMapper().writeValueAsString(mySQLController.getProductInfoResponse(prodId)));
     }
 }
