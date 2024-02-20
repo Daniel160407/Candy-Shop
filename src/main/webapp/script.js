@@ -26,9 +26,17 @@ async function onPurchaseButtonMouseClicked(id) {
 
 async function onBuyButtonMouseClicked(name) {
     const amount = document.getElementById("amount").value;
-    const jsonData = await buyProductRequest(name, amount);
+    console.log(amount);
+    if (amount !== "") {
+        const jsonData = await buyProductRequest(name, amount);
 
-    document.getElementById("remainingAmount").innerText = `Available: ${jsonData.remainingAmount}`;
+        if (typeof jsonData == "number") {
+            alert("Your purchase has failed!");
+        } else {
+            document.getElementById("remainingAmount").innerText = `Available: ${jsonData.remainingAmount}`;
+            document.getElementById("amount").value = "";
+        }
+    }
 }
 
 async function getProductsRequest() {
@@ -43,5 +51,9 @@ async function getProductInfoRequest(id) {
 
 async function buyProductRequest(name, amount) {
     const response = await fetch(`/candy-shop/store/products?name=${name}&amount=${amount}`, {method: "POST"});
-    return await response.json();
+    if (response.ok) {
+        return await response.json();
+    } else {
+        return response.status;
+    }
 }
