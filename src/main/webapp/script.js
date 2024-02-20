@@ -17,24 +17,31 @@ async function onPurchaseButtonMouseClicked(id) {
     const amount = document.getElementById("remainingAmount");
 
     product.innerText = productInfoJson.name;
-    product.innerText = `Price: ${productInfoJson.price}`;
-    product.innerText = `Available: ${productInfoJson.amount}`;
+    price.innerText = `Price: ${productInfoJson.price}`;
+    amount.innerText = `Available: ${productInfoJson.amount}`;
 
+    document.getElementById("product-info").innerHTML += `<button onclick="onBuyButtonMouseClicked('${productInfoJson.name}')">Buy Now</button>`;
     document.getElementById("product-info").style.display = "block";
 }
 
-async function onBuyButtonMouseClicked() {
+async function onBuyButtonMouseClicked(name) {
+    const amount = document.getElementById("amount").value;
+    const jsonData = await buyProductRequest(name, amount);
 
+    document.getElementById("remainingAmount").innerText = `Available: ${jsonData.remainingAmount}`;
 }
 
 async function getProductsRequest() {
     const response = await fetch("/candy-shop/store", {method: "GET"});
-    console.log(1);
     return await response.json();
 }
 
 async function getProductInfoRequest(id) {
-    const response = await fetch(`/candy-shop/products?id=${id}`, {method: "GET"});
-    console.log(2);
+    const response = await fetch(`/candy-shop/store/products?id=${id}`, {method: "GET"});
+    return await response.json();
+}
+
+async function buyProductRequest(name, amount) {
+    const response = await fetch(`/candy-shop/store/products?name=${name}&amount=${amount}`, {method: "POST"});
     return await response.json();
 }

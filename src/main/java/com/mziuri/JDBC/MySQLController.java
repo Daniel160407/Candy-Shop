@@ -1,8 +1,11 @@
 package com.mziuri.JDBC;
 
 import com.mziuri.model.Product;
+import com.mziuri.request.PurchaseRequest;
 import com.mziuri.response.GetProductInfoResponse;
 import com.mziuri.response.GetProductResponse;
+import com.mziuri.response.PurchaseResponse;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -54,9 +57,47 @@ public class MySQLController implements JDBCController {
 
         productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
 
-        Product product = productTypedQuery.getSingleResult();
+        try {
+            Product product = productTypedQuery.getSingleResult();
+            return new GetProductInfoResponse(product.getProd_name(), product.getProd_price(), product.getProd_amount());
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
-        return new GetProductInfoResponse(product.getProd_name(), product.getProd_price(), product.getProd_amount());
+    @Override
+    public PurchaseResponse getPurchaseResponse(PurchaseRequest purchaseRequest) {
+        jdbcConnector.initializeCriteria();
+
+        select = jdbcConnector.getCriteriaQuery().multiselect(
+                jdbcConnector.getProductsRoot().get("prod_id"),
+                jdbcConnector.getProductsRoot().get("prod_name"),
+                jdbcConnector.getProductsRoot().get("prod_amount")
+        ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_name"), purchaseRequest.getName()));
+
+        productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
+
+        try {
+            Product product = productTypedQuery.getSingleResult();
+            if (product.getProd_amount() >= purchaseRequest.getAmount()) {
+                jdbcConnector.getEntityTransaction().begin();
+
+                Product productToBeUpdated = jdbcConnector.getEntityManager().find(Product.class, product.getProd_id());
+                productToBeUpdated.setProd_amount(product.getProd_amount() - purchaseRequest.getAmount());
+
+                jdbcConnector.getEntityTransaction().commit();
+
+                return new PurchaseResponse(product.getProd_name(), (product.getProd_amount() - purchaseRequest.getAmount()));
+            } else {
+                return null;
+            }
+        } catch (NoResultException e) {
+            if (jdbcConnector.getEntityTransaction().isActive()) {
+                jdbcConnector.getEntityTransaction().rollback();
+            }
+
+            return null;
+        }
     }
 
 

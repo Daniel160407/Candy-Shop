@@ -20,12 +20,12 @@ public class StoreServlet extends HttpServlet {
     public void init() {
         StorageReader.getInstance().readAndAddProducts(JDBCConnector.getInstance().getEntityManager());
     }
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/json");
 
         PrintWriter printWriter = response.getWriter();
-        System.err.println(new ObjectMapper().writeValueAsString(mySQLController.getProductResponse()));
         printWriter.println(new ObjectMapper().writeValueAsString(mySQLController.getProductResponse()));
     }
 }

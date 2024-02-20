@@ -79,6 +79,7 @@ button:hover {
     margin: auto;
     display: none;
     position: absolute;
+    justify-content: space-between;
 }
 
 .product-info h1 {
@@ -106,7 +107,7 @@ button:hover {
 .product-info input {
     font-size: 1.2rem;
     padding: 0.5rem;
-    width: 100%;
+    width: 10%;
     box-sizing: border-box;
 }
 
