@@ -1,7 +1,10 @@
 package com.mziuri.JDBC;
 
 import com.mziuri.model.Product;
+import com.mziuri.model.Storage;
+import com.mziuri.request.AddProductRequest;
 import com.mziuri.request.PurchaseRequest;
+import com.mziuri.response.AddProductResponse;
 import com.mziuri.response.GetProductInfoResponse;
 import com.mziuri.response.GetProductResponse;
 import com.mziuri.response.PurchaseResponse;
@@ -100,9 +103,50 @@ public class MySQLController implements JDBCController {
         }
     }
 
-
     @Override
-    public void addNewProduct(Product product) {
+    public AddProductResponse addProducts(AddProductRequest addProductRequest) {
+        jdbcConnector.initializeStorageCriteria();
 
+        CriteriaQuery<Storage> storageSelect = jdbcConnector.getStorageCriteriaQuery().multiselect(
+                jdbcConnector.getStorageRoot().get("password")
+        );
+
+        TypedQuery<Storage> storageTypedQuery = jdbcConnector.getEntityManager().createQuery(storageSelect);
+        Storage storage = storageTypedQuery.getSingleResult();
+
+        if (storage.getPassword().equals(addProductRequest.getPassword())) {
+            try {
+                jdbcConnector.initializeCriteria();
+
+                select = jdbcConnector.getCriteriaQuery().multiselect(
+                        jdbcConnector.getProductsRoot().get("id")
+                ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_name"), addProductRequest.getName()));
+
+                productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
+                Product product = productTypedQuery.getSingleResult();
+
+                Product productToBeUpdated = jdbcConnector.getEntityManager().find(Product.class, product.getProd_id());
+
+                if (productToBeUpdated != null) {
+                    jdbcConnector.getEntityTransaction().begin();
+
+                    productToBeUpdated.setProd_amount(addProductRequest.getAmount());
+
+                    jdbcConnector.getEntityTransaction().commit();
+
+                    return new AddProductResponse(addProductRequest.getName(), addProductRequest.getAmount());
+                } else {
+                    return null;
+                }
+            } catch (Exception e) {
+                if (jdbcConnector.getEntityTransaction().isActive()) {
+                    jdbcConnector.getEntityTransaction().rollback();
+                }
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+
+        return null;
     }
 }

@@ -23,4 +23,12 @@ public class StorageConfig {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
+
+    @Override
+    public String toString() {
+        return "StorageConfig{" +
+                "password='" + password + '\'' +
+                ", products=" + products +
+                '}';
+    }
 }

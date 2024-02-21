@@ -1,6 +1,7 @@
 package com.mziuri.JDBC;
 
 import com.mziuri.model.Product;
+import com.mziuri.model.Storage;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -16,8 +17,10 @@ public class JDBCConnector {
 
     private final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     private CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+    private CriteriaQuery<Storage> storageCriteriaQuery = criteriaBuilder.createQuery(Storage.class);
 
     private Root<Product> productsRoot = criteriaQuery.from(Product.class);
+    private Root<Storage> storageRoot = criteriaQuery.from(Storage.class);
     private static JDBCConnector instance;
 
     public static JDBCConnector getInstance() {
@@ -30,6 +33,11 @@ public class JDBCConnector {
     public void initializeCriteria() {
         this.criteriaQuery = criteriaBuilder.createQuery(Product.class);
         this.productsRoot = criteriaQuery.from(Product.class);
+    }
+
+    public void initializeStorageCriteria() {
+        this.storageCriteriaQuery = criteriaBuilder.createQuery(Storage.class);
+        this.storageRoot = storageCriteriaQuery.from(Storage.class);
     }
 
     public EntityManagerFactory getEntityManagerFactory() {
@@ -54,5 +62,13 @@ public class JDBCConnector {
 
     public Root<Product> getProductsRoot() {
         return productsRoot;
+    }
+
+    public CriteriaQuery<Storage> getStorageCriteriaQuery() {
+        return storageCriteriaQuery;
+    }
+
+    public Root<Storage> getStorageRoot() {
+        return storageRoot;
     }
 }

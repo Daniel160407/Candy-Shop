@@ -35,6 +35,7 @@ async function onBuyButtonMouseClicked(name) {
         } else {
             document.getElementById("remainingAmount").innerText = `Available: ${jsonData.remainingAmount}`;
             document.getElementById("amount").value = "";
+            document.getElementById("product-info").style.display = "none";
         }
     }
 }

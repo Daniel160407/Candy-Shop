@@ -6,6 +6,7 @@
 
     <persistence-unit name="candyshop" transaction-type="RESOURCE_LOCAL">
         <class>com.mziuri.model.Product</class>
+        <class>com.mziuri.model.Storage</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />

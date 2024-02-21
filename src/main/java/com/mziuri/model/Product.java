@@ -41,6 +41,10 @@ public class Product {
         this.prod_amount = prod_amount;
     }
 
+    public Product(int prod_id) {
+        this.prod_id = prod_id;
+    }
+
     public int getProd_id() {
         return prod_id;
     }

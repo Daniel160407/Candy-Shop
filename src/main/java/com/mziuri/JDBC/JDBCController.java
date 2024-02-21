@@ -1,7 +1,9 @@
 package com.mziuri.JDBC;
 
 import com.mziuri.model.Product;
+import com.mziuri.request.AddProductRequest;
 import com.mziuri.request.PurchaseRequest;
+import com.mziuri.response.AddProductResponse;
 import com.mziuri.response.GetProductInfoResponse;
 import com.mziuri.response.GetProductResponse;
 import com.mziuri.response.PurchaseResponse;
@@ -17,5 +19,5 @@ public interface JDBCController {
 
     PurchaseResponse getPurchaseResponse(PurchaseRequest purchaseRequest);
 
-    void addNewProduct(Product product);
+    AddProductResponse addProducts(AddProductRequest addProductRequest);
 }
