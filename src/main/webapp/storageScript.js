@@ -18,7 +18,3 @@ async function saveProduct() {
         alert(`Couldn\`t add your products: ${response.status}`)
     }
 }
-
-async function addProductsRequest(name, amount, password) {
-    return await fetch(`/candy-shop/store/products?name=${name}&amount=${amount}&password=${password}`, {method: "PUT"});
-}

@@ -1,19 +1,14 @@
 package com.mziuri.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mziuri.JDBC.JDBCConnector;
-import com.mziuri.JDBC.MySQLController;
 import com.mziuri.model.Product;
 import com.mziuri.model.Storage;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 
-@RequiredArgsConstructor
 public class StorageReader {
     private static final String STORAGE_FILE_PATH = "src/main/resources/storage.json";
-    private final MySQLController mySQLController = new MySQLController();
 
     private static StorageReader instance;
 
@@ -45,7 +40,7 @@ public class StorageReader {
             if (entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
             }
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,13 +1,22 @@
-class Request {
-    async getProductsRequest() {
-        const response = await fetch("/candy-shop/store", {method: "GET"});
-        return await response.json();
-    }
+async function getProductsRequest() {
+    const response = await fetch("/candy-shop/store", {method: "GET"});
+    return await response.json();
+}
 
-    async getProductInfoRequest(id) {
-        const response = await fetch(`/candy-shop/products?id=${id}`, {method: "GET"});
+async function getProductInfoRequest(id) {
+    const response = await fetch(`/candy-shop/store/products?id=${id}`, {method: "GET"});
+    return await response.json();
+}
+
+async function buyProductRequest(name, amount) {
+    const response = await fetch(`/candy-shop/store/products?name=${name}&amount=${amount}`, {method: "POST"});
+    if (response.ok) {
         return await response.json();
+    } else {
+        return response.status;
     }
 }
 
-export default Request;
+async function addProductsRequest(name, amount, password) {
+    return await fetch(`/candy-shop/store/products?name=${name}&amount=${amount}&password=${password}`, {method: "PUT"});
+}

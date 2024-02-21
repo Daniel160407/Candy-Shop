@@ -40,10 +40,6 @@ public class JDBCConnector {
         this.storageRoot = storageCriteriaQuery.from(Storage.class);
     }
 
-    public EntityManagerFactory getEntityManagerFactory() {
-        return entityManagerFactory;
-    }
-
     public EntityManager getEntityManager() {
         return entityManager;
     }

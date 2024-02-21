@@ -29,7 +29,6 @@ public class Application {
 
         tomcat.start();
         tomcat.getServer().await();
-
     }
 
 }

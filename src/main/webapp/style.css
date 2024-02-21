@@ -66,20 +66,20 @@ button:hover {
 }
 
 .product-info {
-    transition: transform 0.3s ease-out;
-    background-color: #f2f2f2;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    width: 70%;
+    height: 60%;
+    margin: 0 15% 0 50%;
+    flex: 1 1 200px;
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
     padding: 20px;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
-    overflow-y: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin: auto;
-    display: none;
-    position: absolute;
-    justify-content: space-between;
 }
 
 .product-info h1 {
@@ -113,4 +113,29 @@ button:hover {
 
 #main-div {
     position: relative;
+}
+
+#exitButton {
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #f00;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#exitButton:hover {
+    color: #c62828;
+}
+
+#buyButton {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #43a047;
+}
+
+#buyButton:hover {
+    background-color: #3b8e3f;
 }

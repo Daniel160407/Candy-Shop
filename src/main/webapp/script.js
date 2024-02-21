@@ -3,7 +3,6 @@ $("document").ready(async function () {
     const productsList = document.getElementById("productsList");
 
     for (let i = 0; i < productsJsonArray.length; i++) {
-        console.log(productsJsonArray[i].name);
         productsList.innerHTML += `<li><h4>${productsJsonArray[i].name}</h4>
 <button id="${i + 1}" onclick="onPurchaseButtonMouseClicked(${i + 1})">Purchase</button></li>`
     }
@@ -20,13 +19,24 @@ async function onPurchaseButtonMouseClicked(id) {
     price.innerText = `Price: ${productInfoJson.price}`;
     amount.innerText = `Available: ${productInfoJson.amount}`;
 
-    document.getElementById("product-info").innerHTML += `<button onclick="onBuyButtonMouseClicked('${productInfoJson.name}')">Buy Now</button>`;
-    document.getElementById("product-info").style.display = "block";
+    const productInfoDiv = document.getElementById("product-info");
+    const buttons = productInfoDiv.querySelectorAll("button");
+
+    buttons.forEach(button => button.remove());
+
+    const newButton = document.createElement("button");
+    newButton.innerText = "Buy Now";
+    newButton.onclick = () => onBuyButtonMouseClicked(productInfoJson.name);
+    newButton.id = "buyButton";
+    productInfoDiv.appendChild(newButton);
+
+    productInfoDiv.style.display = "block";
 }
+
 
 async function onBuyButtonMouseClicked(name) {
     const amount = document.getElementById("amount").value;
-    console.log(amount);
+
     if (amount !== "") {
         const jsonData = await buyProductRequest(name, amount);
 
@@ -40,21 +50,7 @@ async function onBuyButtonMouseClicked(name) {
     }
 }
 
-async function getProductsRequest() {
-    const response = await fetch("/candy-shop/store", {method: "GET"});
-    return await response.json();
-}
-
-async function getProductInfoRequest(id) {
-    const response = await fetch(`/candy-shop/store/products?id=${id}`, {method: "GET"});
-    return await response.json();
-}
-
-async function buyProductRequest(name, amount) {
-    const response = await fetch(`/candy-shop/store/products?name=${name}&amount=${amount}`, {method: "POST"});
-    if (response.ok) {
-        return await response.json();
-    } else {
-        return response.status;
-    }
+function exitPurchaseWindow() {
+    document.getElementById("amount").value = "";
+    document.getElementById("product-info").style.display = "none";
 }

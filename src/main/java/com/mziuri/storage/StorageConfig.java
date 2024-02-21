@@ -12,23 +12,7 @@ public class StorageConfig {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public List<Product> getProducts() {
         return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    @Override
-    public String toString() {
-        return "StorageConfig{" +
-                "password='" + password + '\'' +
-                ", products=" + products +
-                '}';
     }
 }

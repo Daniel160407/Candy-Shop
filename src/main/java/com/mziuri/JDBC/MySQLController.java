@@ -11,7 +11,6 @@ import com.mziuri.response.PurchaseResponse;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +19,6 @@ public class MySQLController implements JDBCController {
     private CriteriaQuery<Product> select;
     private TypedQuery<Product> productTypedQuery;
     private final JDBCConnector jdbcConnector = JDBCConnector.getInstance();
-
-    @Override
-    public List<Product> getProducts() {
-        select = jdbcConnector.getCriteriaQuery().select(jdbcConnector.getProductsRoot());
-        productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
-
-        return productTypedQuery.getResultList();
-    }
 
     @Override
     public List<GetProductResponse> getProductResponse() {
@@ -76,21 +67,21 @@ public class MySQLController implements JDBCController {
                 jdbcConnector.getProductsRoot().get("prod_id"),
                 jdbcConnector.getProductsRoot().get("prod_name"),
                 jdbcConnector.getProductsRoot().get("prod_amount")
-        ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_name"), purchaseRequest.getName()));
+        ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_name"), purchaseRequest.name()));
 
         productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
 
         try {
             Product product = productTypedQuery.getSingleResult();
-            if (product.getProd_amount() >= purchaseRequest.getAmount()) {
+            if (product.getProd_amount() >= purchaseRequest.amount()) {
                 jdbcConnector.getEntityTransaction().begin();
 
                 Product productToBeUpdated = jdbcConnector.getEntityManager().find(Product.class, product.getProd_id());
-                productToBeUpdated.setProd_amount(product.getProd_amount() - purchaseRequest.getAmount());
+                productToBeUpdated.setProd_amount(product.getProd_amount() - purchaseRequest.amount());
 
                 jdbcConnector.getEntityTransaction().commit();
 
-                return new PurchaseResponse(product.getProd_name(), (product.getProd_amount() - purchaseRequest.getAmount()));
+                return new PurchaseResponse(product.getProd_name(), (product.getProd_amount() - purchaseRequest.amount()));
             } else {
                 return null;
             }
@@ -114,13 +105,13 @@ public class MySQLController implements JDBCController {
         TypedQuery<Storage> storageTypedQuery = jdbcConnector.getEntityManager().createQuery(storageSelect);
         Storage storage = storageTypedQuery.getSingleResult();
 
-        if (storage.getPassword().equals(addProductRequest.getPassword())) {
+        if (storage.getPassword().equals(addProductRequest.password())) {
             try {
                 jdbcConnector.initializeCriteria();
 
                 select = jdbcConnector.getCriteriaQuery().multiselect(
                         jdbcConnector.getProductsRoot().get("id")
-                ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_name"), addProductRequest.getName()));
+                ).where(jdbcConnector.getCriteriaBuilder().equal(jdbcConnector.getProductsRoot().get("prod_name"), addProductRequest.name()));
 
                 productTypedQuery = jdbcConnector.getEntityManager().createQuery(select);
                 Product product = productTypedQuery.getSingleResult();
@@ -130,11 +121,11 @@ public class MySQLController implements JDBCController {
                 if (productToBeUpdated != null) {
                     jdbcConnector.getEntityTransaction().begin();
 
-                    productToBeUpdated.setProd_amount(addProductRequest.getAmount());
+                    productToBeUpdated.setProd_amount(addProductRequest.amount());
 
                     jdbcConnector.getEntityTransaction().commit();
 
-                    return new AddProductResponse(addProductRequest.getName(), addProductRequest.getAmount());
+                    return new AddProductResponse(addProductRequest.name(), addProductRequest.amount());
                 } else {
                     return null;
                 }

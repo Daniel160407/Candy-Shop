@@ -1,15 +1,12 @@
 package com.mziuri.servlet;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mziuri.JDBC.JDBCConnector;
 import com.mziuri.JDBC.MySQLController;
 import com.mziuri.request.AddProductRequest;
 import com.mziuri.request.PurchaseRequest;
 import com.mziuri.response.AddProductResponse;
 import com.mziuri.response.GetProductInfoResponse;
 import com.mziuri.response.PurchaseResponse;
-import com.mziuri.storage.StorageReader;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;

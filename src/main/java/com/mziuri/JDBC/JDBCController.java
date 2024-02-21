@@ -11,7 +11,6 @@ import com.mziuri.response.PurchaseResponse;
 import java.util.List;
 
 public interface JDBCController {
-    List<Product> getProducts();
 
     List<GetProductResponse> getProductResponse();
 

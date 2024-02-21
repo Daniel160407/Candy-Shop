@@ -61,29 +61,7 @@ public class Product {
         return prod_amount;
     }
 
-    public void setProd_id(int prod_id) {
-        this.prod_id = prod_id;
-    }
-
-    public void setProd_name(String prod_name) {
-        this.prod_name = prod_name;
-    }
-
-    public void setProd_price(float prod_price) {
-        this.prod_price = prod_price;
-    }
-
     public void setProd_amount(int prod_amount) {
         this.prod_amount = prod_amount;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "prod_id=" + prod_id +
-                ", prod_name='" + prod_name + '\'' +
-                ", prod_price=" + prod_price +
-                ", prod_amount=" + prod_amount +
-                '}';
     }
 }
